@@ -19,8 +19,8 @@
                         <label for="">Nama Anggota</label>
                     </div>
                     <div class="col-sm-6">
-                        <select name="id_anggota" id="" class="form-control">
-                            <option value="">Pilih Anggota</option>\
+                        <select name="id_anggota" id="" class="form-control" required>
+                            <option value="">Pilih Anggota</option>
                             @foreach ($anggotas as $anggota)
                             <option value="{{$anggota->id}}">{{$anggota->nama_anggota}}</option>
 

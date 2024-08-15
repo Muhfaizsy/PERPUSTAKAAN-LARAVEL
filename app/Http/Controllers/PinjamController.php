@@ -6,6 +6,9 @@ use App\Models\Anggota;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Pinjam;
+use App\Models\DetailPinjam;
+use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class PinjamController extends Controller
@@ -18,7 +21,7 @@ class PinjamController extends Controller
     public function index()
     {
         // select * from users;
-        $datas =  Category::get();
+        $datas =  Pinjam::with('anggota')->get();
         return view('pinjam.index', compact('datas'));
     }
 
@@ -46,19 +49,33 @@ class PinjamController extends Controller
      */
     public function store(Request $request)
     {
-        $category = new Category();
-        $category->category_name  = $request->category_name;
-        $category->save();
+        // $category = new Category();
+        // $category->category_name  = $request->category_name;
+        // $category->save();
 
+        // return $request;
         // cara ke dua
-        // User::create([
-        //     'name'  => $request->name,
-        //     'email'  => $request->email,
-        //     'password'  => $request->password,
-        // ]);
+        $pinjam = Pinjam::create([
+            'anggota_id'  => $request->id_anggota,
+            'kode_transaksi'  => $request->kode_transaksi,
+            'tgl_pinjam'  => $request->tgl_pinjam,
+            'tgl_kembali'  => $request->tgl_kembali,
+            'petugas'  => (Auth::user()->name ?? 'Faiz')
+        ]);
+
+        if ($pinjam) {
+            foreach ($request->buku_id as $key => $val) {
+                DetailPinjam::create([
+                    'buku_id'   => $val,
+                    'pinjam_id' => $pinjam->id,
+                ]);
+            }
+        }
+
+        Alert::success('Good Job', 'Transaksi Pinjam Berhasil di Buat');
 
         // User::create($request->all());
-        return redirect()->to('category')->with('message', 'Data berhasil diubah');
+        return redirect()->to('pinjam')->with('message', 'Data berhasil diubah');
     }
 
     /**

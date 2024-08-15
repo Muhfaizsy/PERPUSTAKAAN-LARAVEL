@@ -117,7 +117,7 @@
             buku_id = $('#buku_id').val();
             let newRow = "<tr>";
                 newRow += "<td>" + no + "</td>";
-                newRow += "<td>" + judul_buku + "<input type='text' name='buku_id[]' id='buku_id' value='" + buku_id +"'></td>";
+                newRow += "<td>" + judul_buku + "<input type='hidden' name='buku_id[]' id='buku_id' value='" + buku_id +"'></td>";
                 newRow += "<td>" + penerbit + "</td>";
                 newRow += "<td><button type='button' class='btn btn-danger btn-sm hapus-row'>Hapus Row</button></td>";
                 newRow += "</tr>"
